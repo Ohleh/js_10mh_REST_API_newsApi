@@ -2,12 +2,28 @@
 // 'api_key=live_HLM1hsQ0tkLTQgU4vMq98s2XjilsTWNx2KVDtgfwRZOhNbaF9uBwUUnvoBxWLSc5'
 // https://api.thecatapi.com/v1/images/search
 
-// import { numb, numr } from './js/cat-api';
-// console.log(numb);
-// console.log(numr);
+const selectRef = document.querySelector('.breed-select');
 
-const nuumb = 'hi-hi';
-console.log(nuumb);
+const createSelectItem = breed =>
+  `<option value="${breed.name}">${breed.name}</option>`;
+
+const createSelectList = breeds =>
+  breeds.reduce((acc, breed) => acc + createSelectItem(breed), '');
+
+const renderOptionsSelect = breeds => {
+  const list = createSelectList(breeds);
+
+  selectRef.insertAdjacentHTML('afterbegin', list);
+};
+
+import { promiseBreed } from './js/cat-api';
+promiseBreed()
+  .then(breeds => {
+    renderOptionsSelect(breeds);
+  })
+  .catch(err => {
+    console.log('errr', err);
+  });
 
 // const KEY =
 //   'live_HLM1hsQ0tkLTQgU4vMq98s2XjilsTWNx2KVDtgfwRZOhNbaF9uBwUUnvoBxWLSc5';
