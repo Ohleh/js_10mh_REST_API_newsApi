@@ -1,10 +1,20 @@
 // https://thecatapi.com
 import { promiseBreed, fetchCatByBreed } from './js/cat-api';
+import SlimSelect from 'slim-select';
 
 let breedsList;
 const selectRef = document.querySelector('select.breed-select');
 const catInfoRef = document.querySelector('div.cat-info');
 const errorMes = document.querySelector('p.error');
+
+const runSlim = () => {
+  new SlimSelect({
+    select: selectRef,
+    settings: {
+      placeholderText: 'Сhoose breed',
+    },
+  });
+};
 
 const createSelectItem = breed =>
   `<option value="${breed.name}">${breed.name}</option>`;
@@ -15,6 +25,7 @@ const createSelectList = breeds =>
 const renderOptionsSelect = breeds => {
   const list = createSelectList(breeds);
   selectRef.insertAdjacentHTML('afterbegin', list);
+  runSlim();
 };
 
 promiseBreed()
