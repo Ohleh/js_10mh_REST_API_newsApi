@@ -2,7 +2,8 @@
 import { promiseBreed, fetchCatByBreed } from './js/cat-api';
 
 let breedsList;
-const selectRef = document.querySelector('.breed-select');
+const selectRef = document.querySelector('select.breed-select');
+const catInfoRef = document.querySelector('div.cat-info');
 
 const createSelectItem = breed =>
   `<option value="${breed.name}">${breed.name}</option>`;
@@ -24,14 +25,22 @@ promiseBreed()
     console.log('errr', err);
   });
 
+const renderMarkup = (url, name, description) => {
+  const markup = `<img src=${url} alt=${name} height=300> <H3>${name} </H3> <p>${description}</p>`;
+  catInfoRef.insertAdjacentHTML('beforeend', markup);
+};
+
 const findBreedId = selectBreedName => {
-  const breedItem = breedsList.map(catName => {
+  breedsList.map(catName => {
     if (catName.name === selectBreedName) {
-      const getCat = fetchCatByBreed(catName.id);
-      getCat.then(data => {
+      fetchCatByBreed(catName.id).then(data => {
         data.map(catCard => {
-          console.log(catCard.url);
-          catCard.breeds.map(breed => console.log(breed.description));
+          const catUrl = catCard.url;
+          catCard.breeds.map(breed => {
+            const catDescr = breed.description;
+            const catName = breed.name;
+            renderMarkup(catUrl, catName, catDescr);
+          });
         });
       });
     }
@@ -39,6 +48,7 @@ const findBreedId = selectBreedName => {
 };
 
 const onSelect = e => {
+  catInfoRef.textContent = '';
   const selectBreedName = selectRef.value; // ім'я
   findBreedId(selectBreedName);
 };
