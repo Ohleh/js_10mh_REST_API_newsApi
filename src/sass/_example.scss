@@ -27,6 +27,10 @@
   background-position: center;
 }
 
-.loader {
+.hide {
+  display: none;
+}
+
+.error {
   color: red;
 }

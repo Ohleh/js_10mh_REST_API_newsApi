@@ -12,6 +12,7 @@ const BASE_URL = {
 };
 
 let breedsData;
+const errorMes = document.querySelector('p.error');
 
 const breedsGet = data => {
   return data.map(breed => ({ id: breed.id, name: breed.name }));
@@ -22,8 +23,9 @@ const fetchBreeds = axios
   .then(({ data }) => {
     breedsData = breedsGet(data);
   })
-  .catch(function (error) {
-    console.log(error);
+  .catch(err => {
+    console.log('errr', err);
+    errorMes.classList.remove('hide');
   });
 
 const promiseBreed = () => {
@@ -32,22 +34,15 @@ const promiseBreed = () => {
   });
 };
 
-// const catGet = dataId => {
-//   return dataId.map(catCard => {
-//     console.log(catCard.url);
-//     catCard.breeds.map(breed => console.log(breed.description));
-//     return { url: catCard.url, description: breed.description };
-//   });
-// };
-
 const fetchCatByBreed = currentId => {
   const result = axios
     .get(`${BASE_URL.ID}/search?breed_ids=${currentId}`)
     .then(({ data }) => {
       return data;
     })
-    .catch(function (error) {
-      console.log(error);
+    .catch(err => {
+      console.log('errr', err);
+      errorMes.classList.remove('hide');
     });
   return result;
 };
