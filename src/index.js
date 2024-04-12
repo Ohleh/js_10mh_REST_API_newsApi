@@ -6,12 +6,13 @@ let breedsList;
 const selectRef = document.querySelector('select.breed-select');
 const catInfoRef = document.querySelector('div.cat-info');
 const errorMes = document.querySelector('p.error');
+const loaderMes = document.querySelector('p.loader');
 
 const runSlim = () => {
   new SlimSelect({
     select: selectRef,
     settings: {
-      placeholderText: 'Сhoose breed',
+      placeholderText: 'Choose breed',
     },
   });
 };
@@ -30,6 +31,9 @@ const renderOptionsSelect = breeds => {
 
 promiseBreed()
   .then(breeds => {
+    //
+    loaderMes.classList.add('hide');
+    //
     renderOptionsSelect(breeds);
     breedsList = breeds;
   })
@@ -56,7 +60,7 @@ const findBreedId = selectBreedName => {
             catCard.breeds.map(breed => {
               const catDescr = breed.description;
               const catName = breed.name;
-
+              loaderMes.classList.add('hide');
               renderMarkup(catUrl, catName, catDescr);
             });
           });
@@ -71,6 +75,7 @@ const findBreedId = selectBreedName => {
 
 const onSelect = e => {
   catInfoRef.textContent = '';
+  loaderMes.classList.remove('hide');
   const selectBreedName = selectRef.value; // ім'я
   findBreedId(selectBreedName);
 };
